@@ -12,8 +12,8 @@ app.get("/", (request, response) => {
     response.status(200).json({ message: 'Service is running'})
 });
 
-// app.use("/users", usersController)
+app.use("/users", usersController)
 
-// app.use("/items", itemsController);
+app.use("/items", itemsController);
 
 module.exports = app;
