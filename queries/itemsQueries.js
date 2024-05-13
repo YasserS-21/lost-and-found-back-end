@@ -1,7 +1,9 @@
 const db = require('../db/dbConfig');
+require('dotenv').config();
 
-function getAllItems() {
-    
+const getAllItems = async () => {
+    const response = await db.any("SELECT * FROM items");
+    return response;
 }
 
 module.exports = {
