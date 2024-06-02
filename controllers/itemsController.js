@@ -76,7 +76,6 @@ itemsController.put("/:id", async (request, response) => {
     }
     
     const item = request.body;
-
     // validate the update request
     if (!validateItem(item)) {
       return response.status(400).json({ error: "Invalid item" });

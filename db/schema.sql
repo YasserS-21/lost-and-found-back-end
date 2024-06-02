@@ -14,7 +14,7 @@ CREATE TABLE items (
   name TEXT NOT NULL,
   location TEXT,
   description TEXT,
-  date_lost DATE,
+  date_lost TEXT,
   image_url TEXT,
   owner_id INT,
   CONSTRAINT fk_owner_id FOREIGN KEY(owner_id) REFERENCES users(id)

@@ -18,7 +18,7 @@ const createItem = async (item) => {
 }
 const updateItem = async (id, item) => {
     const { name, description, location, date_lost } = item;
-    const response = await db.any("UPDATE items SET name = $1 , description = $2 , location = $3 , date_lost= $4 WHERE id = $5 RETURNING *", [name, description, location, date_lost, id])
+    const response = await db.any("UPDATE items SET name = $1 , description = $2 , location = $3 , date_lost = $4 WHERE id = $5 RETURNING *", [name, description, location, date_lost, id])
     return response;
 }
 const deleteItem = async (id) => {
