@@ -10,7 +10,7 @@ const {
   validateId,
   validateItem,
 } = require("./controllerHelpers/itemControllerHelper.js");
-
+const { authenticateStaff } = require('../middlewares/authMiddleware');
 const itemsController = Router();
 
 itemsController.get("/", async (request, response) => {
@@ -47,48 +47,30 @@ itemsController.get("/:id", async (request, response) => {
   }
 });
 
-itemsController.post("/", async (request, response) => {
+itemsController.post("/", authenticateStaff, async (request, response) => {
   try {
     const item = request.body;
+    item.added_by_id = request.staff.id; // Get staff ID from authenticated session
+    item.date_found = new Date().toISOString().split('T')[0];
+    item.status = 'unclaimed';
 
-    // Check if the item is valid
-    if (!validateItem(item)) {
-      return response.status(400).json({ error: "Invalid item" });
-    }
-
-    // create the item
     const createdItem = await createItem(item);
-
     response.status(201).json({ data: createdItem });
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
 });
 
-itemsController.put("/:id", async (request, response) => {
+itemsController.put("/:id", authenticateStaff, async (request, response) => {
   try {
-
     const { id } = request.params;
-
-    // validate the request id
-    if (!validateId(Number(id))) {
-      return response.status(404).json({ error: "Invalid id" });
-    }
-    
     const item = request.body;
-    // validate the update request
-    if (!validateItem(item)) {
-      return response.status(400).json({ error: "Invalid item" });
+
+    if (item.status === 'claimed' && !item.date_claimed) {
+      item.date_claimed = new Date().toISOString().split('T')[0];
     }
 
-    // This will return the all items that have the specified id (we should only have one item)
     const updatedItem = await updateItem(Number(id), item);
-
-    // If the item has not been updated then the item does not exist with that id
-    if (!updatedItem.length) {
-      return response.status(404).json({ error: "Item not found" });
-    }
-
     response.status(200).json({ data: updatedItem[0] });
   } catch (err) {
     response.status(500).json({ error: err.message });
