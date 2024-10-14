@@ -1,21 +1,25 @@
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS staff;
 DROP TABLE IF EXISTS items;
 
-CREATE TABLE users (
-	id SERIAL PRIMARY KEY,
-	first_name varchar(255),
-	last_name varchar(255),
-	email varchar(255),
-	pic text
+CREATE TABLE staff (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'staff'
 );
 
 CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  location TEXT,
-  description TEXT,
-  date_lost DATE,
-  image_url TEXT,
-  owner_id INT,
-  CONSTRAINT fk_owner_id FOREIGN KEY(owner_id) REFERENCES users(id)
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    description TEXT,
+    date_found DATE NOT NULL,
+    image_url TEXT,
+    status VARCHAR(50) DEFAULT 'unclaimed',
+    added_by_id INT NOT NULL,
+    date_claimed DATE,
+    claimed_by TEXT,
+    CONSTRAINT fk_added_by FOREIGN KEY(added_by_id) REFERENCES staff(id)
 );
