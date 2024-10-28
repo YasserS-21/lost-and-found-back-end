@@ -7,14 +7,15 @@ function validateId(id) {
   }
   
   function validateItem(item) {
-    //our ideal object keys, value (data-types)
     const schema = new Map(
-      Object.entries({
-        name: "string",
-        location: "string",
-        description: "string",
-        date_lost: "string",
-      }),
+        Object.entries({
+            name: "string",
+            location: "string",
+            description: "string",
+            date_lost: "string",
+            color: "string",
+            item_type: "string"
+        })
     );
 
     const itemMap = new Map(Object.entries(item));
