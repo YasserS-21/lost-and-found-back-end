@@ -22,5 +22,7 @@ CREATE TABLE items (
     added_by_id INT NOT NULL,
     date_claimed DATE,
     claimed_by TEXT,
+    color VARCHAR(50),
+    item_type VARCHAR(50),
     CONSTRAINT fk_added_by FOREIGN KEY(added_by_id) REFERENCES staff(id)
 );
